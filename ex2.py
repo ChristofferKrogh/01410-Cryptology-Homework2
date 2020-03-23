@@ -36,7 +36,9 @@ def millerRabin(m):
     b = np.random.randint(1, m)
 
     # Step 3 
-    y = (b ** t) % m # TODO: maybe we should compute this more efficiently. use pow(b, t, m)
+    # pow(x, y, m) computes x ** y % m efficiently
+    # y = (b ** t) % m
+    y = pow(b, t, m)
 
     # Step 4
     if y % m == 1:
@@ -47,7 +49,8 @@ def millerRabin(m):
         if y % m == -1 or y % m == m - 1:
             return True
         else:
-            y = (y ** 2) % m # TODO: maybe we should compute this more efficiently
+            # y = (y ** 2) % m
+            y = pow(y, 2, m)
     
     # Step 6
     return False
@@ -63,46 +66,51 @@ def isPrimeMR(m, k):
     return True
     
 
+def main():
+    # Exercise 2.2.a
+    print("\nExercise 2.2.a")
+    start = 25
+    end = 35000
+    primes = []
+
+    # We check whether even numbers are primes even though all except 2 obviously aren't
+    for num in range(2, start):
+        if isPrime(num, primes):
+            primes.append(num)
+
+    num_primes_less_start = len(primes)
+
+    for num in range(start, end):
+        if isPrime(num, primes):
+            primes.append(num)
+
+    num_primes_in_interval = len(primes) - num_primes_less_start
+
+    print(f"Number of primes in the interval from {start} to {end} is: {num_primes_in_interval}")
+    print(f"Compare this to fact 4.3.1: {end} / log({end}) - {start} / log({start}) = {end / math.log(end) - start / math.log(start)}")
 
 
-# Exercise 2.2.a
-print("\nExercise 2.2.a")
-start = 25
-end = 35000
-primes = []
+    # Exercise 2.2.b
+    print("\nExercise 2.2.b")
+    # implement Miller-Rabin with k iterations
+    for i in range(14):
+        print(f"{i} - {isPrimeMR(i, 3)}")
 
-# Note: we check whether even numbers are primes even though all except 2 obviously aren't
-for num in range(2, start):
-    if isPrime(num, primes):
-        primes.append(num)
+    # Exercise 2.2.c
+    print("\nExercise 2.2.c")
+    num_primes_results = []
+    k_max = 5
+    for k in range(1, k_max + 1):
+        num_primes_MR = 0
+        for m in range(start, end):
+            if isPrimeMR(m, k):
+                num_primes_MR += 1
 
-num_primes_less_start = len(primes)
+        num_primes_results.append(num_primes_MR)
 
-for num in range(start, end):
-    if isPrime(num, primes):
-        primes.append(num)
-
-num_primes_in_interval = len(primes) - num_primes_less_start
-
-print(f"Number of primes in the interval from {start} to {end} is: {num_primes_in_interval}")
-print(f"Compare this to fact 4.3.1: {end} / log({end}) - {start} / log({start}) = {end / math.log(end) - start / math.log(start)}")
+    print(list(range(1, k_max + 1)))
+    print(num_primes_results)
 
 
-# Exercise 2.2.b
-print("\nExercise 2.2.b")
-# implement Miller-Rabin with k iterations
-for i in range(14):
-    print(f"{i} - {isPrimeMR(i, 3)}")
-
-# Exercise 2.2.c
-print("\nExercise 2.2.c")
-num_primes_results = []
-for k in range(1, 4):
-    num_primes_MR = 0
-    for m in range(start, end):
-        if isPrimeMR(m, k):
-            num_primes_MR += 1
-
-    num_primes_results.append(num_primes_MR)
-
-print(num_primes_results)
+if __name__ == "__main__":
+    main()
