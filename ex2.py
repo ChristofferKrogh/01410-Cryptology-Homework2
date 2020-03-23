@@ -35,8 +35,8 @@ def millerRabin(m):
     # Step 2
     b = np.random.randint(1, m)
 
-    # Step 3
-    y = (b ** t) % m # TODO: maybe we should compute this more efficiently
+    # Step 3 
+    y = (b ** t) % m # TODO: maybe we should compute this more efficiently. use pow(b, t, m)
 
     # Step 4
     if y % m == 1:
@@ -97,7 +97,7 @@ for i in range(14):
 # Exercise 2.2.c
 print("\nExercise 2.2.c")
 num_primes_results = []
-for k in range(1, 3):
+for k in range(1, 4):
     num_primes_MR = 0
     for m in range(start, end):
         if isPrimeMR(m, k):

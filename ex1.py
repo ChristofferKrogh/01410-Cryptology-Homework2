@@ -58,7 +58,10 @@ def findMultiplicativeInverse(a, b):
     """
     r, s, _ = euclidsExtendedAlgorithm(a, b)
     if r == 1:
-        return s
+        if s < 0:
+            return s % b
+        else:
+            return s
     else:
         return None
     
